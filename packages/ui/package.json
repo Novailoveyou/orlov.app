@@ -3,15 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./button": "./src/button.tsx",
-    "./card": "./src/card.tsx",
-    "./code": "./src/code.tsx"
+    "./button": "./components/button.tsx",
+    "./lib/utils": "./lib/utils/index.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "generate:component": "turbo gen react-component",
     "check-types": "tsc --noEmit",
-    "tailwind:build": "pnpm dlx tailwindcss -i ./src/index.scss -o ./dist/index.css --watch"
+    "tailwind:build": "pnpm dlx tailwindcss -i ./index.scss -o ./dist/index.css --watch"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
@@ -27,6 +26,7 @@
     "typescript": "5.5.4"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.473.0",
