@@ -5,10 +5,18 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "manypkg:check": "manypkg check",
+    "manypkg:fix": "manypkg fix",
+    "manypkg:upgrade": "manypkg upgrade",
+    "manypkg:npm-tag": "manypkg npm-tag",
+    "manypkg:run": "manypkg run",
+    "postinstall": "manypkg:check"
   },
   "devDependencies": {
-    "prettier": "^3.2.5",
+    "@manypkg/cli": "^0.23.0",
+    "concurrently": "^9.1.2",
+    "prettier": "^3.3.3",
     "turbo": "^2.3.3",
     "typescript": "5.5.4"
   },
