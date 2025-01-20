@@ -1,3 +1,3 @@
 import tailwindconfig from '@repo/ui/tailwind.config'
 
-export default tailwindconfig
+export default { presets: [tailwindconfig] }

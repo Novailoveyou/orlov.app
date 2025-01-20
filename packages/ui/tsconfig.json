@@ -4,9 +4,9 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@repo/ui/*": ["./src/*"]
     }
   },
-  "include": ["lib", "components"],
+  "include": ["src/lib", "src/components"],
   "exclude": ["node_modules", "dist"]
 }
