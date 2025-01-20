@@ -82,6 +82,12 @@ importers:
       '@types/react-dom':
         specifier: 18.3.0
         version: 18.3.0
+      sass:
+        specifier: ^1.83.4
+        version: 1.83.4
+      tailwindcss:
+        specifier: ^3.4.17
+        version: 3.4.17(ts-node@10.9.2(@types/node@20.17.6)(typescript@5.5.4))
       typescript:
         specifier: 5.5.4
         version: 5.5.4

@@ -4,7 +4,7 @@
       "mode": "auto"
     }
   ],
-  "files.associations": { "*.scss": "tailwindcss", "*.css": "tailwindcss" },
+  "files.associations": { "*.scss": "postcss", "*.css": "postcss" },
   "editor.quickSuggestions": {
     "strings": "on"
   },

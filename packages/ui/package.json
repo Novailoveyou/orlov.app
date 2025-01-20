@@ -4,13 +4,16 @@
   "private": true,
   "exports": {
     "./button": "./components/button.tsx",
-    "./lib/utils": "./lib/utils/index.ts"
+    "./lib/utils": "./lib/utils/index.ts",
+    "./tailwind.config": "./tailwind.config.js",
+    "./postcss.config": "./postcss.config.js",
+    "./styles": "./styles/index.scss"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "generate:component": "turbo gen react-component",
     "check-types": "tsc --noEmit",
-    "tailwind:build": "pnpm dlx tailwindcss -i ./index.scss -o ./dist/index.css --watch"
+    "tailwind:build": "pnpm dlx tailwindcss -i ./styles/index.scss -o ./dist/index.css --watch"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
