@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./tailwind.config": "./tailwind.config.js",
-    "./postcss.config": "./postcss.config.js",
+    "./tailwind.config": "./tailwind.config.ts",
+    "./postcss.config": "./postcss.config.mjs",
     "./button": "./src/components/button.tsx",
     "./lib/utils": "./src/lib/utils/index.ts",
     "./styles": "./src/styles/index.scss"
@@ -33,6 +33,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.473.0",
+    "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^2.6.0",

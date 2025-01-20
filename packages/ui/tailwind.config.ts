@@ -1,5 +1,8 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from 'tailwindcss'
+import tailwindcssAnimate from 'tailwindcss-animate'
+export type TailwindConfig = Config
+
+const tailwindconfig = {
   darkMode: ['class'],
   content: [
     // './app/**/*.{js,ts,jsx,tsx,mdx}',
@@ -57,5 +60,7 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
-}
+  plugins: [tailwindcssAnimate],
+} as const satisfies TailwindConfig
+
+export default tailwindconfig
