@@ -11,11 +11,12 @@
     "manypkg:upgrade": "manypkg upgrade",
     "manypkg:npm-tag": "manypkg npm-tag",
     "manypkg:run": "manypkg run",
-    "postinstall": "manypkg:check"
+    "postinstall": "pnpm manypkg:check"
   },
   "devDependencies": {
     "@manypkg/cli": "^0.23.0",
     "concurrently": "^9.1.2",
+    "husky": "^9.1.7",
     "prettier": "^3.3.3",
     "turbo": "^2.3.3",
     "typescript": "5.5.4"
