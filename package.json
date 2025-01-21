@@ -3,19 +3,25 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "test": "turbo test",
+    "test:watch": "turbo test:watch",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "commit": "pnpm cz",
     "manypkg:check": "manypkg check",
     "manypkg:fix": "manypkg fix",
     "manypkg:upgrade": "manypkg upgrade",
     "manypkg:npm-tag": "manypkg npm-tag",
     "manypkg:run": "manypkg run",
-    "postinstall": "pnpm manypkg:check"
+    "postinstall": "pnpm manypkg:check",
+    "prepare": "pnpm husky"
   },
   "devDependencies": {
     "@manypkg/cli": "^0.23.0",
+    "commitizen": "^4.3.1",
     "concurrently": "^9.1.2",
+    "cz-conventional-changelog": "^3.3.0",
     "husky": "^9.1.7",
     "prettier": "^3.3.3",
     "turbo": "^2.3.3",
@@ -24,5 +30,10 @@
   "packageManager": "pnpm@9.0.0",
   "engines": {
     "node": ">=18"
+  },
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && npx cz --hook || true"
+    }
   }
 }

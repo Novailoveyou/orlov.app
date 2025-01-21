@@ -1,12 +1,14 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
+  "globalDependencies": [
+    ".env",
+    ".env.local",
+    ".env.development.local",
+    ".env.test.local",
+    ".env.production.local"
+  ],
   "tasks": {
-    "test": {},
-    "test:watch": {
-      "cache": false,
-      "persistent": true
-    },
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
@@ -21,6 +23,15 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "test": {
+      "dependsOn": ["^check-types", "^lint", "^build"]
+    },
+    "test:watch": {
+      "dependsOn": ["^check-types", "^lint", "^build"],
+      "cache": false,
+      "persistent": true
     }
-  }
+  },
+  "globalEnv": ["NODE_ENV", "TZ"]
 }
