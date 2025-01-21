@@ -1,13 +1,19 @@
 'use server'
 import 'server-only'
-import { handleErrorGracefully } from '@/lib/utils'
 import axios from 'axios'
-import { ROUTE } from '@/entities/post/model/constants'
+import { handleErrorGracefully } from '@/shared/lib/utils'
+import { ROUTE } from '@/entities/post/config/constants'
 import { Post } from '@/entities/post/model/types'
 
+/**
+ * @description Listing all resources
+ */
 export const getPosts = async () =>
   (await axios.get<Post[]>(ROUTE).catch(handleErrorGracefully))?.data || []
 
+/**
+ * @description Getting a resource
+ */
 export const getPost = async (postId: Post['id']) =>
   (await axios.get<Post>(`${ROUTE}/${postId}`).catch(handleErrorGracefully))
     ?.data || null
@@ -15,6 +21,9 @@ export const getPost = async (postId: Post['id']) =>
 export const getPostFetcher = async ([, postId]: [typeof ROUTE, Post['id']]) =>
   await getPost(postId)
 
+/**
+ * @description Creating a resource
+ */
 export const createPost = async (post: Omit<Post, 'id'>) =>
   (await axios.post<Post>(ROUTE, post).catch(handleErrorGracefully))?.data ||
   null
@@ -22,6 +31,9 @@ export const createPost = async (post: Omit<Post, 'id'>) =>
 export const createPostFetcher = async ([post]: [Omit<Post, 'id'>]) =>
   await createPost(post)
 
+/**
+ * @description Updating a resource
+ */
 export const updatePost = async (postId: Post['id'], post: Omit<Post, 'id'>) =>
   (
     await axios
@@ -34,6 +46,9 @@ export const updatePostFetcher = async ([postId, post]: [
   Omit<Post, 'id'>
 ]) => await updatePost(postId, post)
 
+/**
+ * @description Deleting a resource
+ */
 export const deletePost = async (postId: Post['id']) =>
   !!(await axios.delete(`${ROUTE}/${postId}`).catch(handleErrorGracefully))
     ?.data

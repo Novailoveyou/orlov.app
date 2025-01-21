@@ -1,3 +1,4 @@
+import 'server-only'
 import { Footer } from '@repo/ui/footer'
 import { Header } from '@repo/ui/header'
 import { Main } from '@repo/ui/main'
@@ -11,6 +12,8 @@ import { Button } from '@repo/ui/button'
 import { ThemeToggle } from '@repo/ui/theme-toggle'
 import { getPosts } from '@/entities/post/api/actions'
 import { Posts } from '@/entities/post/ui/Posts'
+import { getUsers } from '@/entities/user/api/actions'
+import { Users } from '@/entities/user/ui/Users'
 
 const menuItems = createMenuItems([
   {
@@ -29,6 +32,7 @@ const menuItems = createMenuItems([
 
 export default async function Home() {
   const posts = await getPosts()
+  const users = await getUsers()
 
   return (
     <>
@@ -53,7 +57,10 @@ export default async function Home() {
             <ThemeToggle />
           </Container>
         </Section>
+        <H2>Posts</H2>
         <Posts posts={posts} />
+        <H2>Users</H2>
+        <Users users={users} />
       </Main>
       <Footer>Footer</Footer>
     </>

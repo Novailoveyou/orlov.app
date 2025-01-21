@@ -1,16 +1,16 @@
 'use client'
 
 import useSWR from 'swr'
+import useSWRMutation from 'swr/mutation'
+import { ROUTE } from '@/entities/post/config/constants'
+import { Post } from '@/entities/post/model/types'
 import {
   createPostFetcher,
   deletePostFetcher,
   getPostFetcher,
   getPosts,
   updatePostFetcher
-} from './actions'
-import { ROUTE } from '@/entities/post/model/constants'
-import { Post } from '@/entities/post/model/types'
-import useSWRMutation from 'swr/mutation'
+} from '@/entities/post/api/actions'
 
 export const usePosts = (fallbackData?: Post[]) => {
   const {

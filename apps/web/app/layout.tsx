@@ -1,7 +1,7 @@
+import 'server-only'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { ThemeProvider } from '@repo/ui/theme-provider'
-
 import '@repo/ui/styles'
 
 const geistSans = localFont({
