@@ -9,7 +9,8 @@ import { Container } from '@repo/ui/container'
 import { H1, H2, P } from '@repo/ui/typography'
 import { Button } from '@repo/ui/button'
 import { ThemeToggle } from '@repo/ui/theme-toggle'
-import { getPosts } from '@/api/jsonplaceholder/post/actions'
+import { getPosts } from '@/entities/post/api/actions'
+import { Posts } from '@/entities/post/ui/Posts'
 
 const menuItems = createMenuItems([
   {
@@ -28,8 +29,6 @@ const menuItems = createMenuItems([
 
 export default async function Home() {
   const posts = await getPosts()
-
-  console.log('posts: ', posts)
 
   return (
     <>
@@ -54,6 +53,7 @@ export default async function Home() {
             <ThemeToggle />
           </Container>
         </Section>
+        <Posts posts={posts} />
       </Main>
       <Footer>Footer</Footer>
     </>
