@@ -3,6 +3,10 @@
 import * as React from 'react'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
 
+/**
+ * @description Defines a theme provider to be used in Next.js apps to have theme toggle
+ * @see https://ui.shadcn.com/docs/dark-mode/next
+ */
 export function ThemeProvider({
   children,
   ...props

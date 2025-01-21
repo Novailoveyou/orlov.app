@@ -1,6 +1,9 @@
 import { cn } from '@repo/ui/lib/utils'
 import { ComponentProps } from 'react'
 
+/**
+ * @description Defines a section in a document
+ */
 export function Section({
   className,
   children,

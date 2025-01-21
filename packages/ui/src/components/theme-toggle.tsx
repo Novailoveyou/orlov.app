@@ -6,6 +6,9 @@ import { useTheme } from 'next-themes'
 
 import { Button } from '@repo/ui/button'
 
+/**
+ * @description Defines a theme toggle button that switches between `dark` and `light` modes
+ */
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme()
 

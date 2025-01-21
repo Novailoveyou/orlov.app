@@ -16,6 +16,9 @@ type TypographyProps<Tag extends keyof JSX.IntrinsicElements> =
     variant?: keyof typeof VARIANTS
   }
 
+/**
+ * @description Defines HTML heading 1
+ */
 export const H1 = ({
   variant = 'h1',
   className,
@@ -24,6 +27,9 @@ export const H1 = ({
   return <h1 className={cn(VARIANTS[variant], className)} {...props} />
 }
 
+/**
+ * @description Defines HTML heading 2
+ */
 export const H2 = ({
   variant = 'h2',
   className,
@@ -32,6 +38,9 @@ export const H2 = ({
   return <h2 className={cn(VARIANTS[variant], className)} {...props} />
 }
 
+/**
+ * @description Defines HTML heading 3
+ */
 export const H3 = ({
   variant = 'h3',
   className,
@@ -40,6 +49,9 @@ export const H3 = ({
   return <h3 className={cn(VARIANTS[variant], className)} {...props} />
 }
 
+/**
+ * @description Defines HTML heading 4
+ */
 export const H4 = ({
   variant = 'h4',
   className,
@@ -48,6 +60,9 @@ export const H4 = ({
   return <h4 className={cn(VARIANTS[variant], className)} {...props} />
 }
 
+/**
+ * @description Defines a paragraph
+ */
 export const P = ({
   variant = 'p',
   className,
@@ -56,6 +71,9 @@ export const P = ({
   return <p className={cn(VARIANTS[variant], className)} {...props} />
 }
 
+/**
+ * @description Defines a section that is quoted from another source
+ */
 export const Blockquote = ({
   variant = 'blockquote',
   className,
@@ -64,6 +82,9 @@ export const Blockquote = ({
   return <blockquote className={cn(VARIANTS[variant], className)} {...props} />
 }
 
+/**
+ * @description Defines a text span
+ */
 export const Text = ({
   variant = 'span',
   className,
