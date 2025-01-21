@@ -2,10 +2,10 @@
   "name": "orlov.app",
   "private": true,
   "scripts": {
-    "build": "turbo build",
+    "build": "turbo build --color",
     "test": "turbo test",
     "test:watch": "turbo test:watch",
-    "dev": "turbo dev",
+    "dev": "turbo dev --parallel",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "cm": "pnpm cz",
