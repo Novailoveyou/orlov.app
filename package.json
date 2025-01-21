@@ -8,7 +8,7 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "commit": "pnpm cz",
+    "cm": "pnpm cz",
     "manypkg:check": "manypkg check",
     "manypkg:fix": "manypkg fix",
     "manypkg:upgrade": "manypkg upgrade",
