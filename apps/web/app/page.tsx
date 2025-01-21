@@ -9,6 +9,7 @@ import { Container } from '@repo/ui/container'
 import { H1, H2, P } from '@repo/ui/typography'
 import { Button } from '@repo/ui/button'
 import { ThemeToggle } from '@repo/ui/theme-toggle'
+import { getPosts } from '@/api/jsonplaceholder/post/actions'
 
 const menuItems = createMenuItems([
   {
@@ -25,7 +26,11 @@ const menuItems = createMenuItems([
   }
 ])
 
-export default function Home() {
+export default async function Home() {
+  const posts = await getPosts()
+
+  console.log('posts: ', posts)
+
   return (
     <>
       <Header>
