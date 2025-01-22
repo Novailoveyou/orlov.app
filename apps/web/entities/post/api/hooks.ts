@@ -11,19 +11,23 @@ import {
   getPosts,
   updatePostFetcher
 } from '@/entities/post/api/actions'
+import { useStore } from '@/app/_store'
 
 export const usePosts = (fallbackData?: Post[]) => {
+  const setPosts = useStore(state => state.setPosts)
+
   const {
     data: posts = [],
     isLoading: arePostsLoading,
     error: postsError,
-    isValidating: isPostsValidating,
+    isValidating: arePostsValidating,
     mutate: mutatePosts
   } = useSWR(ROUTE, getPosts, {
-    fallbackData
+    fallbackData,
+    onSuccess: setPosts
   })
 
-  return { posts, arePostsLoading, postsError, isPostsValidating, mutatePosts }
+  return { posts, arePostsLoading, postsError, arePostsValidating, mutatePosts }
 }
 
 export const usePost = (postId: Post['id'], fallbackData?: Post) => {

@@ -11,8 +11,10 @@ import {
   getUsers,
   updateUserFetcher
 } from '@/entities/user/api/actions'
+import { useStore } from '@/app/_store'
 
 export const useUsers = (fallbackData?: User[]) => {
+  const setUsers = useStore(state => state.setUsers)
   const {
     data: users = [],
     isLoading: areUsersLoading,
@@ -20,7 +22,8 @@ export const useUsers = (fallbackData?: User[]) => {
     isValidating: isUsersValidating,
     mutate: mutateUsers
   } = useSWR(ROUTE, getUsers, {
-    fallbackData
+    fallbackData,
+    onSuccess: setUsers
   })
 
   return { users, areUsersLoading, usersError, isUsersValidating, mutateUsers }

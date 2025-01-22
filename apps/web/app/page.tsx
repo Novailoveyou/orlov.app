@@ -14,6 +14,7 @@ import { getPosts } from '@/entities/post/api/actions'
 import { Posts } from '@/entities/post/ui/Posts'
 import { getUsers } from '@/entities/user/api/actions'
 import { Users } from '@/entities/user/ui/Users'
+import { TestStore } from './test-store'
 
 const menuItems = createMenuItems([
   {
@@ -61,6 +62,7 @@ export default async function Home() {
         <Posts posts={posts} />
         <H2>Users</H2>
         <Users users={users} />
+        <TestStore />
       </Main>
       <Footer>Footer</Footer>
     </>
