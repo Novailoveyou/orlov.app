@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars -- we need this for TS reference */
-import { create, StateCreator } from 'zustand'
+import { create, StateCreator, StoreApi, UseBoundStore } from 'zustand'
 import { combine, createJSONStorage } from 'zustand/middleware'
 import { devtools, persist } from 'zustand/middleware'
 import { version } from '@/package.json'
@@ -16,7 +16,23 @@ export type Slice<T> = StateCreator<
   T
 >
 
-export const useStore = create(
+type WithSelectors<S> = S extends { getState: () => infer T }
+  ? S & { use: { [K in keyof T]: () => T[K] } }
+  : never
+
+const createSelectors = <S extends UseBoundStore<StoreApi<object>>>(
+  _store: S
+) => {
+  let store = _store as WithSelectors<typeof _store>
+  store.use = {}
+  for (let k of Object.keys(store.getState())) {
+    ;(store.use as any)[k] = () => store(s => s[k as keyof typeof s])
+  }
+
+  return store
+}
+
+const useStoreBase = create(
   devtools(
     persist(
       immer<Slices>((...props) => ({
@@ -37,5 +53,7 @@ export const useStore = create(
     )
   )
 )
+
+export const useStore = createSelectors(useStoreBase)
 
 export type Store = ReturnType<(typeof useStore)['getState']>

@@ -14,7 +14,8 @@ import {
 import { useStore } from '@/app/_store'
 
 export const useUsers = (fallbackData?: User[]) => {
-  const setUsers = useStore(state => state.setUsers)
+  const setUsers = useStore.use.setUsers()
+
   const {
     data: users = [],
     isLoading: areUsersLoading,
