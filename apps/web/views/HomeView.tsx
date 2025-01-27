@@ -18,16 +18,16 @@ import { Users } from '@/entities/user/ui/Users'
 const menuItems = createMenuItems([
   {
     key: 'acd41f12-6311-4d39-96bc-2bf9c1f2b01a',
-    children: 'Menu item 1',
+    children: 'Menu item 1'
   },
   {
     key: 'a59617bc-e854-4b02-aaad-259461f6b3df',
-    children: 'Menu Item 2',
+    children: 'Menu Item 2'
   },
   {
     key: '2dffa233-5563-456a-89d6-be115aeb70db',
-    children: 'Menu Item 3',
-  },
+    children: 'Menu Item 3'
+  }
 ])
 
 export async function HomeView() {
