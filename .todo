@@ -1,0 +1,6 @@
+1. stylelint https://stylelint.io/user-guide/get-started
+2. storybook https://turbo.build/repo/docs/guides/tools/storybook
+3. Figure out the correct license
+4. Integrate `git-cz` package
+5. Install `zukeeper`
+6. Integrate `stylelint-prettier` and `stylelint-config-prettier`

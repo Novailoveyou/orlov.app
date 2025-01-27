@@ -20,6 +20,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "swr": "^2.3.0",
+    "zod": "^3.24.1",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
@@ -32,6 +33,7 @@
     "postcss": "^8.5.1",
     "sass": "^1.83.4",
     "server-only": "^0.0.1",
+    "ts-toolbelt": "^9.6.0",
     "typescript": "5.5.4"
   },
   "browserslist": [
