@@ -6,21 +6,18 @@ import { Main } from '@repo/ui/main'
 import { Section } from '@repo/ui/section'
 import { ThemeToggle } from '@repo/ui/theme-toggle'
 import { H1, P } from '@repo/ui/typography'
-import { ComponentProps } from 'react'
 
-import { Breadcrumbs } from '@/features/breadcrumbs'
+import { Breadcrumbs, createBreadcrumbs } from '@/features/breadcrumbs'
 import { Footer } from '@/widgets/footer'
 import { Header } from '@/widgets/header'
 
-const BREADCRUMBS = [] as const satisfies ComponentProps<
-  typeof Breadcrumbs
->['breadcrumbs']
+const breadcrumbs = createBreadcrumbs([])
 
 export async function HomeView() {
   return (
     <>
       <Header />
-      <Breadcrumbs breadcrumbs={BREADCRUMBS} />
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
       <Main>
         <Section>
           <Container>
