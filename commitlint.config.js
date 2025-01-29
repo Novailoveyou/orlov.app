@@ -1,5 +1,6 @@
 module.exports = {
   extends: ['@commitlint/config-conventional'],
+  // formatter: '@commitlint/format',
   rules: {
     //   TODO Add Scope Enum Here
     // 'scope-enum': [2, 'always', ['yourscope', 'yourscope']],
@@ -17,8 +18,8 @@ module.exports = {
         'test',
         'revert',
         'perf',
-        'vercel'
-      ]
-    ]
-  }
+        'vercel',
+      ],
+    ],
+  },
 }

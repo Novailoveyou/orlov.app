@@ -1,10 +1,9 @@
 'use client'
 
-import * as React from 'react'
+import { Button } from '@repo/ui/button'
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
-
-import { Button } from '@repo/ui/button'
+import * as React from 'react'
 
 /**
  * @description Defines a theme toggle button that switches between `dark` and `light` modes

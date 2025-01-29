@@ -1,7 +1,7 @@
 'use client'
 
-import * as React from 'react'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
+import * as React from 'react'
 
 /**
  * @description Defines a theme provider to be used in Next.js apps to have theme toggle
@@ -17,7 +17,8 @@ export function ThemeProvider({
       defaultTheme='system'
       enableSystem
       disableTransitionOnChange
-      {...props}>
+      {...props}
+    >
       {children}
     </NextThemesProvider>
   )

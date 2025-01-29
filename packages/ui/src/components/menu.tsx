@@ -39,7 +39,7 @@ function MenuItem({
  * @description Creates an array of static MenuItem's props
  */
 export function createMenuItems(
-  menuItems: ComponentProps<typeof Menu>['items']
+  menuItems: ComponentProps<typeof Menu>['items'],
 ) {
   return menuItems
 }

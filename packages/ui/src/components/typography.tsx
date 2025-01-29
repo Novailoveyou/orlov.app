@@ -8,7 +8,7 @@ const VARIANTS = {
   h4: 'scroll-m-20 text-xl font-semibold tracking-tight',
   p: 'leading-7',
   blockquote: 'mt-6 border-l-2 pl-6 italic',
-  span: ''
+  span: '',
 } as const
 
 type TypographyProps<Tag extends keyof JSX.IntrinsicElements> =

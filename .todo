@@ -4,3 +4,31 @@
 4. Integrate `git-cz` package
 5. Install `zukeeper`
 6. Integrate `stylelint-prettier` and `stylelint-config-prettier`
+7. Add these entities
+
+- user
+- auth
+- page
+- multi
+- contact
+- invoice
+- support
+- complaint
+- creation
+- terminal
+- departure
+- reference
+- calculation
+- testimonials
+- seo
+- registry
+- sitemap
+- cargo
+- ssr
+- moderation
+- pod
+- acceptance_act
+- tracking_shipment
+- registryInvalidContact
+
+test
