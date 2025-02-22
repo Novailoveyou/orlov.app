@@ -1,5 +1,5 @@
 import 'server-only'
-import '@repo/ui/styles'
+import '@/app/globals.scss'
 
 import { ThemeProvider } from '@repo/ui/theme-provider'
 import type { Metadata } from 'next'
@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider defaultTheme='dark'>{children}</ThemeProvider>
       </body>
     </html>
   )
