@@ -70,8 +70,8 @@ button:focus-visible {
   width: 100%;
   margin: 0 auto;
   text-align: center;
-  height: 100dvh;
-  width: 100dvw;
+  height: calc(100dvh - 1px);
+  width: calc(100dvw - 1px);
   display: flex;
 }
 
@@ -80,7 +80,7 @@ button:focus-visible {
   flex-grow: 1;
 }
 
-.col {
+.column {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -90,6 +90,14 @@ button:focus-visible {
   flex-grow: 1;
 }
 
+.food {
+  background: yellow;
+}
+
 .player {
   background: red;
+}
+
+* {
+  outline: 1px solid gray;
 }

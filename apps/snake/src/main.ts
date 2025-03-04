@@ -1,167 +1,264 @@
 import './style.css'
 
-const Selectors = (() => {
-  const SELECTORS = {
-    app: '#app',
-  } as const
+const use = (() => {
+  type State<Value> = { value: Value }
 
-  return SELECTORS
+  return <Value>(
+    value: Value,
+  ): [State<Value>, (newValue: Value | ((_value: Value) => Value)) => void] => {
+    const state: State<Value> = { value }
+
+    const setState = (newValue: Value | ((_value: Value) => Value)) => {
+      state.value =
+        newValue instanceof Function ? newValue(state.value) : newValue
+    }
+
+    return [state, setState]
+  }
 })()
 
-const Field = ((Selectors) => {
-  const SIZE = 100
+type Cell = [number, number]
 
-  const matrix = Array.from({ length: SIZE }, (_, x) =>
-    Array.from({ length: SIZE }, (_, y) => ({ x, y })),
-  )
+type CellId = `${number}-${number}`
 
-  const map = matrix
-    .reduce((acc, cur) => [...acc, ...cur], [])
-    .reduce(
-      (acc, cur) => ({ ...acc, [`${cur.x}-${cur.y}`]: cur }),
-      {} as (typeof matrix)[number][number],
-    )
+const createSnake = (() => {
+  type CellNode = { cell: Cell; next: CellNode | null; prev: CellNode | null }
 
-  console.log(map)
+  let headNode: CellNode = { cell: [0, 0], next: null, prev: null }
+  let tailNode: CellNode = { cell: [0, 0], next: null, prev: null }
+  let size = 0
+
+  const cells: Record<CellId, CellNode | null> = {}
+
+  const cellToId = (cell: Cell): CellId => `${cell[0]}-${cell[1]}`
+
+  const length = () => size
+  const head = () => headNode.cell
+  const tail = () => tailNode
+
+  const cell = (cell: Cell) => cells[cellToId(cell)]
+
+  const isHead = (cell: Cell) => !cells[cellToId(cell)]?.next
+
+  /**
+   * @description [Cell->, ~~Cell~~, <-Cell]
+   */
+  const shrink = (cell: Cell) => {
+    const _cell = { ...cells[cellToId(cell)] }
+
+    if (_cell.prev) _cell.prev.next = _cell.next || null
+    if (_cell.next) _cell.next.prev = _cell.prev || null
+
+    cells[cellToId(cell)] = null
+    size = size - 1
+  }
+
+  const eat = (cell: Cell) => {
+    const newHeadNode = {
+      cell,
+      next: null,
+      prev: cells[cellToId(headNode.cell)],
+    }
+
+    if (cells[cellToId(headNode.cell)])
+      // @ts-expect-error -- TS won't understand the check above
+      cells[cellToId(headNode.cell)].next = newHeadNode
+
+    cells[cellToId(cell)] = newHeadNode
+
+    size = size + 1
+  }
+
+  const pop = () => {
+    const tail = cell(tailNode.cell)
+
+    shrink(tailNode.cell)
+
+    return tail?.cell
+  }
+
+  return () => ({
+    length,
+    cell,
+    head,
+    tail,
+    eat,
+    pop,
+    isHead,
+  })
+})()
+
+const getRandomInt = (min: number, max: number) => {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+const Snake = (() => {
+  const SIZE = 50
+  // const SPEED = 1000 / 60
+  const SPEED = 100
+  const FOOD: Record<CellId, Cell | null> = {}
+
+  let width = window.innerWidth
+  let height = window.innerHeight
+  let direction: 'up' | 'right' | 'down' | 'left' = 'right'
+  let pause = false
+
+  const snake = createSnake()
+
+  const getCell = (cell: Cell | undefined) =>
+    !cell ? null : document.getElementById(`${cell[0]}-${cell[1]}`)
+
+  const handleResize = (uiEvent: UIEvent) => {
+    width = window.innerWidth
+    height = window.innerHeight
+  }
 
   const createField = () => {
     const field = document.createElement('div')
-
     field.classList.add('field')
-
-    matrix.forEach((_, x) => {
-      const col = document.createElement('div')
-
-      col.setAttribute('class', 'col')
-
-      _.forEach((_, y) => {
-        const cell = document.createElement('div')
-        cell.classList.add('cell')
-
-        cell.setAttribute('id', `${x}-${y}`)
-        cell.setAttribute('data-x', `${x}`)
-        cell.setAttribute('data-y', `${y}`)
-
-        col.appendChild(cell)
-      })
-
-      field.appendChild(col)
-    })
 
     return field
   }
 
+  const createColumn = (_: unknown, x: number) => {
+    const createRow = (_: unknown, y: number) => {
+      const cell = document.createElement('div')
+      cell.setAttribute('id', `${x}-${y}`)
+      cell.classList.add('cell')
+
+      return cell
+    }
+
+    const rows = Array.from({ length: SIZE }, createRow)
+
+    const column = document.createElement('div')
+    column.classList.add('column')
+
+    column.append(...rows)
+
+    return column
+  }
+
   const field = createField()
 
-  const init = () => {
-    const app = document.querySelector<HTMLDivElement>(Selectors.app)
+  const columns = Array.from({ length: SIZE }, createColumn)
 
-    app?.appendChild(field)
+  field.append(...columns)
 
-    return () => field.remove()
+  const handleKeydown = (e: KeyboardEvent) => {
+    switch (e.key) {
+      case 'ArrowUp':
+        direction = 'up'
+        break
+      case 'ArrowRight':
+        direction = 'right'
+        break
+      case 'ArrowDown':
+        direction = 'down'
+        break
+      case 'ArrowLeft':
+        direction = 'left'
+        break
+    }
   }
 
-  const getCell = (x: number, y: number) => document.getElementById(`${x}-${y}`)
+  const move = () => {
+    if (pause) return
+    const [_x, _y] = snake.head()
 
-  return { size: SIZE, init, getCell }
-})(Selectors)
+    let head: Cell = [_x, _y]
 
-const Player = ((Field) => {
-  const SPEED = 1000
-
-  const DIRECTIONS = {
-    up: 'up',
-    right: 'right',
-    down: 'down',
-    left: 'left',
-  } as const
-
-  let x = 0
-  let y = 0
-  let direction: keyof typeof DIRECTIONS = 'right'
-  const setDirection = (_direction: typeof direction) => {
-    direction = _direction
-  }
-
-  const move = (_direction: keyof typeof DIRECTIONS = direction) => {
-    const _x = x
-    const _y = y
-    switch (_direction) {
+    switch (direction) {
       case 'up':
-        y = y - 1
+        if (_y - 1 < 0) {
+          head = [_x, SIZE - 1]
+          break
+        }
+        head = [_x, _y - 1]
         break
       case 'right':
-        x = x + 1
+        if (_x + 1 > SIZE - 1) {
+          head = [0, _y]
+          break
+        }
+        head = [_x + 1, _y]
         break
       case 'down':
-        y = y + 1
+        if (_y + 1 > SIZE - 1) {
+          head = [_x, 0]
+          break
+        }
+        head = [_x, _y + 1]
         break
       case 'left':
-        x = x - 1
+        if (_x - 1 < 0) {
+          head = [SIZE - 1, _y]
+          break
+        }
+        head = [_x - 1, _y]
         break
     }
 
-    if (x > Field.size - 1) x = 0
-    if (x < 0) x = Field.size - 1
+    if (FOOD[`${_x}-${_y}`]) {
+      FOOD[`${_x}-${_y}`] = null
+      getCell(head)?.classList.remove('food')
+    } else {
+      const tail = snake.pop()
+      getCell(tail)?.classList.remove('player')
+    }
 
-    if (y > Field.size - 1) y = 0
-    if (y < 0) y = Field.size - 1
+    if (snake.cell(head) && !snake.isHead(head)) {
+      pause = true
+      alert('lost')
+      window.location.reload()
+    } else {
+      snake.eat(head)
+    }
 
-    Field.getCell(_x, _y)?.classList.remove('player')
-    Field.getCell(x, y)?.classList.add('player')
+    getCell(head)?.classList.add('player')
+  }
+
+  const feed = () => {
+    if (pause) return
+    const x = getRandomInt(0, SIZE)
+    const y = getRandomInt(0, SIZE)
+
+    getCell([x, y])?.classList.add('food')
+
+    FOOD[`${x}-${y}`] = [x, y]
   }
 
   const init = () => {
-    const interval = setInterval(move, SPEED)
+    window.addEventListener('resize', handleResize)
+
+    window.addEventListener('keydown', handleKeydown)
+
+    document.getElementById('app')?.appendChild(field)
+
+    const moveInterval = setInterval(move, SPEED)
+    const foodInterval = setInterval(feed, SPEED * 10)
 
     return () => {
-      clearInterval(interval)
+      window.removeEventListener('resize', handleResize)
+
+      window.removeEventListener('keydown', handleKeydown)
+
+      document.getElementById('app')?.removeChild(field)
+
+      clearInterval(moveInterval)
+      clearInterval(foodInterval)
     }
   }
 
-  return { direction, setDirection, x, y, init }
-})(Field)
-
-const Controls = ((Player) => {
-  const init = () => {
-    const handleKeydown = (e: KeyboardEvent) => {
-      switch (e.key) {
-        case 'ArrowUp':
-          Player.setDirection('up')
-          break
-        case 'ArrowRight':
-          Player.setDirection('right')
-          break
-        case 'ArrowDown':
-          Player.setDirection('down')
-          break
-        case 'ArrowLeft':
-          Player.setDirection('left')
-          break
-      }
-    }
-
-    document.addEventListener('keydown', handleKeydown)
-
-    const cleanup = () => {
-      document.removeEventListener('keydown', handleKeydown)
-    }
-
-    return cleanup
-  }
-
-  return { init }
-})(Player)
-
-const App = (() => {
-  const init = (
-    ...modules: (typeof Field | typeof Controls | typeof Player)[]
-  ) => {
-    const cleanups = modules.map((module) => module.init())
-
-    return () => cleanups.forEach((cleanup) => cleanup())
-  }
   return { init }
 })()
 
-App.init(Field, Controls, Player)
+const App = (() => {
+  const init = () => Snake.init()
+
+  return { init }
+})()
+
+App.init()
