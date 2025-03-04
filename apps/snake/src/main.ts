@@ -17,77 +17,6 @@ const use = (() => {
   }
 })()
 
-type Cell = [number, number]
-
-type CellId = `${number}-${number}`
-
-const createSnake = (() => {
-  type CellNode = { cell: Cell; next: CellNode | null; prev: CellNode | null }
-
-  let headNode: CellNode = { cell: [0, 0], next: null, prev: null }
-  let tailNode: CellNode = { cell: [0, 0], next: null, prev: null }
-  let size = 0
-
-  const cells: Record<CellId, CellNode | null> = {}
-
-  const cellToId = (cell: Cell): CellId => `${cell[0]}-${cell[1]}`
-
-  const length = () => size
-  const head = () => headNode.cell
-  const tail = () => tailNode
-
-  const cell = (cell: Cell) => cells[cellToId(cell)]
-
-  const isHead = (cell: Cell) => !cells[cellToId(cell)]?.next
-
-  /**
-   * @description [Cell->, ~~Cell~~, <-Cell]
-   */
-  const shrink = (cell: Cell) => {
-    const _cell = { ...cells[cellToId(cell)] }
-
-    if (_cell.prev) _cell.prev.next = _cell.next || null
-    if (_cell.next) _cell.next.prev = _cell.prev || null
-
-    cells[cellToId(cell)] = null
-    size = size - 1
-  }
-
-  const eat = (cell: Cell) => {
-    const newHeadNode = {
-      cell,
-      next: null,
-      prev: cells[cellToId(headNode.cell)],
-    }
-
-    if (cells[cellToId(headNode.cell)])
-      // @ts-expect-error -- TS won't understand the check above
-      cells[cellToId(headNode.cell)].next = newHeadNode
-
-    cells[cellToId(cell)] = newHeadNode
-
-    size = size + 1
-  }
-
-  const pop = () => {
-    const tail = cell(tailNode.cell)
-
-    shrink(tailNode.cell)
-
-    return tail?.cell
-  }
-
-  return () => ({
-    length,
-    cell,
-    head,
-    tail,
-    eat,
-    pop,
-    isHead,
-  })
-})()
-
 const getRandomInt = (min: number, max: number) => {
   min = Math.ceil(min)
   max = Math.floor(max)
@@ -95,17 +24,22 @@ const getRandomInt = (min: number, max: number) => {
 }
 
 const Snake = (() => {
+  type Cell = [number, number]
+
   const SIZE = 50
   // const SPEED = 1000 / 60
   const SPEED = 100
-  const FOOD: Record<CellId, Cell | null> = {}
+  const HEAD: Cell = [0, 0]
+  const SNAKE = [/* TAIL */ HEAD]
+  const TAIL: Record<`${Cell[number]}-${Cell[number]}`, Cell | null> = {}
+  const FOOD: Record<`${Cell[number]}-${Cell[number]}`, Cell | null> = {}
 
   let width = window.innerWidth
   let height = window.innerHeight
   let direction: 'up' | 'right' | 'down' | 'left' = 'right'
   let pause = false
 
-  const snake = createSnake()
+  const getHead = () => SNAKE[SNAKE.length - 1]
 
   const getCell = (cell: Cell | undefined) =>
     !cell ? null : document.getElementById(`${cell[0]}-${cell[1]}`)
@@ -166,58 +100,60 @@ const Snake = (() => {
 
   const move = () => {
     if (pause) return
-    const [_x, _y] = snake.head()
+    const [_x, _y] = getHead()
 
-    let head: Cell = [_x, _y]
+    let newHead: Cell = [_x, _y]
 
     switch (direction) {
       case 'up':
         if (_y - 1 < 0) {
-          head = [_x, SIZE - 1]
+          newHead = [_x, SIZE - 1]
           break
         }
-        head = [_x, _y - 1]
+        newHead = [_x, _y - 1]
         break
       case 'right':
         if (_x + 1 > SIZE - 1) {
-          head = [0, _y]
+          newHead = [0, _y]
           break
         }
-        head = [_x + 1, _y]
+        newHead = [_x + 1, _y]
         break
       case 'down':
         if (_y + 1 > SIZE - 1) {
-          head = [_x, 0]
+          newHead = [_x, 0]
           break
         }
-        head = [_x, _y + 1]
+        newHead = [_x, _y + 1]
         break
       case 'left':
         if (_x - 1 < 0) {
-          head = [SIZE - 1, _y]
+          newHead = [SIZE - 1, _y]
           break
         }
-        head = [_x - 1, _y]
+        newHead = [_x - 1, _y]
         break
     }
 
-    if (FOOD[`${_x}-${_y}`]) {
-      FOOD[`${_x}-${_y}`] = null
-      getCell(head)?.classList.remove('food')
+    if (FOOD[`${newHead[0]}-${newHead[1]}`]) {
+      FOOD[`${newHead[0]}-${newHead[1]}`] = null
+      getCell(newHead)?.classList.remove('food')
     } else {
-      const tail = snake.pop()
+      const tail = SNAKE.shift()
+      if (tail) TAIL[`${tail[0]}-${tail[1]}`] = null
       getCell(tail)?.classList.remove('player')
     }
 
-    if (snake.cell(head) && !snake.isHead(head)) {
+    if (TAIL[`${newHead[0]}-${newHead[1]}`]) {
       pause = true
       alert('lost')
       window.location.reload()
     } else {
-      snake.eat(head)
+      SNAKE.push(newHead)
+      if (SNAKE.length > 1) TAIL[`${_x}-${_y}`] = [_x, _y]
     }
 
-    getCell(head)?.classList.add('player')
+    getCell(newHead)?.classList.add('player')
   }
 
   const feed = () => {
