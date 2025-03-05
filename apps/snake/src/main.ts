@@ -28,7 +28,7 @@ const Snake = (() => {
 
   const SIZE = 50
   // const SPEED = 1000 / 60
-  const SPEED = 100
+  const SPEED = 43
   const HEAD: Cell = [0, 0]
   const SNAKE = [/* TAIL */ HEAD]
   const TAIL: Record<`${Cell[number]}-${Cell[number]}`, Cell | null> = {}
