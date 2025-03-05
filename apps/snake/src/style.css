@@ -111,7 +111,7 @@ button:focus-visible {
   background-color: yellow;
 }
 
-.player {
+.snake {
   border-radius: .15rem;
   opacity: 1;
   background-color: red;
@@ -125,7 +125,7 @@ button:focus-visible {
   background-color: deeppink;
 }
 
-.head>* {
+.count {
   position: absolute;
   top: 50%;
   left: 50%;

@@ -17,6 +17,18 @@ import './style.css'
 //   }
 // })()
 
+const Classes = (() => {
+  return {
+    snake: 'snake',
+    food: 'food',
+    head: 'head',
+    cell: 'cell',
+    column: 'column',
+    field: 'field',
+    count: 'count',
+  } as const
+})()
+
 type Cell = [number, number]
 
 type ElementId = Parameters<typeof document.getElementById>['0']
@@ -42,9 +54,9 @@ const Utils = (() => {
 //   window.removeEventListener('resize', handleResize)
 // })()
 
-const Field = (() => {
+const Field = ((Classes) => {
   const field = document.createElement('div')
-  field.classList.add('field')
+  field.classList.add(Classes.field)
 
   const init = (size: number) => {
     if (size === field.childNodes.length) return field
@@ -53,7 +65,7 @@ const Field = (() => {
       const createRow = (_: unknown, y: number) => {
         const cell = document.createElement('div')
         cell.setAttribute('id', `${x}-${y}`)
-        cell.classList.add('cell')
+        cell.classList.add(Classes.cell)
 
         return cell
       }
@@ -61,7 +73,7 @@ const Field = (() => {
       const rows = Array.from({ length: size }, createRow)
 
       const column = document.createElement('div')
-      column.classList.add('column')
+      column.classList.add(Classes.column)
 
       column.append(...rows)
 
@@ -79,9 +91,9 @@ const Field = (() => {
     !cell ? null : document.getElementById(`${cell[0]}-${cell[1]}`)
 
   return { init, cell }
-})()
+})(Classes)
 
-const Snake = ((Utils, Field) => {
+const Snake = ((Classes, Utils, Field) => {
   const SIZE = 50
   const SPEED = 43
   const HEAD: Cell = [0, 0]
@@ -134,25 +146,25 @@ const Snake = ((Utils, Field) => {
     const _headCell = Field.cell(SNAKE[SNAKE.length - 1])!
     const headCell = Field.cell(head)!
 
-    if (headCell.classList.contains('food')) {
-      headCell.classList.remove('food')
+    if (headCell.classList.contains(Classes.food)) {
+      headCell.classList.remove(Classes.food)
     } else {
       const tail = SNAKE.shift()
-      Field.cell(tail)?.classList.remove('player')
+      Field.cell(tail)?.classList.remove(Classes.snake)
     }
 
-    _headCell.classList.remove('head')
+    _headCell.classList.remove(Classes.head)
     _headCell.innerHTML = ''
 
-    if (headCell.classList.contains('player')) {
+    if (headCell.classList.contains(Classes.snake)) {
       pause()
       alert(`You ate yourself. Your tail grew to the size of ${SNAKE.length}`)
       window.location.reload()
     } else {
       SNAKE.push(head)
 
-      headCell.classList.add('player', 'head')
-      headCell.innerHTML = `<span>${SNAKE.length - 1}<span>`
+      headCell.classList.add(Classes.snake, Classes.head)
+      headCell.innerHTML = `<span class="${Classes.count}">${SNAKE.length - 1}<span>`
     }
   }
 
@@ -160,7 +172,7 @@ const Snake = ((Utils, Field) => {
     const x = Utils.randomNumber(0, SIZE)
     const y = Utils.randomNumber(0, SIZE)
 
-    Field.cell([x, y])?.classList.add('food')
+    Field.cell([x, y])?.classList.add(Classes.food)
   }
 
   const pause = () => {
@@ -230,7 +242,7 @@ const Snake = ((Utils, Field) => {
   }
 
   return { init }
-})(Utils, Field)
+})(Classes, Utils, Field)
 
 const App = (() => {
   const init = (id: ElementId) => Snake.init(id)
