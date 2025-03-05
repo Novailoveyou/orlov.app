@@ -84,15 +84,19 @@ const Snake = (() => {
   const handleKeydown = (e: KeyboardEvent) => {
     switch (e.key) {
       case 'ArrowUp':
+      case 'w':
         direction = 'up'
         break
       case 'ArrowRight':
+      case 'd':
         direction = 'right'
         break
       case 'ArrowDown':
+      case 's':
         direction = 'down'
         break
       case 'ArrowLeft':
+      case 'a':
         direction = 'left'
         break
     }
