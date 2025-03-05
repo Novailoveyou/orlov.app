@@ -1,21 +1,21 @@
 import './style.css'
 
-const use = (() => {
-  type State<Value> = { value: Value }
+// const use = (() => {
+//   type State<Value> = { value: Value }
 
-  return <Value>(
-    value: Value,
-  ): [State<Value>, (newValue: Value | ((_value: Value) => Value)) => void] => {
-    const state: State<Value> = { value }
+//   return <Value>(
+//     value: Value,
+//   ): [State<Value>, (newValue: Value | ((_value: Value) => Value)) => void] => {
+//     const state: State<Value> = { value }
 
-    const setState = (newValue: Value | ((_value: Value) => Value)) => {
-      state.value =
-        newValue instanceof Function ? newValue(state.value) : newValue
-    }
+//     const setState = (newValue: Value | ((_value: Value) => Value)) => {
+//       state.value =
+//         newValue instanceof Function ? newValue(state.value) : newValue
+//     }
 
-    return [state, setState]
-  }
-})()
+//     return [state, setState]
+//   }
+// })()
 
 const getRandomInt = (min: number, max: number) => {
   min = Math.ceil(min)
@@ -34,8 +34,8 @@ const Snake = (() => {
   const TAIL: Record<`${Cell[number]}-${Cell[number]}`, Cell | null> = {}
   const FOOD: Record<`${Cell[number]}-${Cell[number]}`, Cell | null> = {}
 
-  let width = window.innerWidth
-  let height = window.innerHeight
+  // let width = window.innerWidth
+  // let height = window.innerHeight
   let direction: 'up' | 'right' | 'down' | 'left' = 'right'
   let pause = false
 
@@ -44,10 +44,10 @@ const Snake = (() => {
   const getCell = (cell: Cell | undefined) =>
     !cell ? null : document.getElementById(`${cell[0]}-${cell[1]}`)
 
-  const handleResize = (uiEvent: UIEvent) => {
-    width = window.innerWidth
-    height = window.innerHeight
-  }
+  // const handleResize = (_: UIEvent) => {
+  //   width = window.innerWidth
+  //   height = window.innerHeight
+  // }
 
   const createField = () => {
     const field = document.createElement('div')
@@ -153,7 +153,10 @@ const Snake = (() => {
       if (SNAKE.length > 1) TAIL[`${_x}-${_y}`] = [_x, _y]
     }
 
-    getCell(newHead)?.classList.add('player')
+    getCell([_x, _y])?.classList.remove('head')
+    getCell([_x, _y])!.innerHTML = ''
+    getCell(newHead)?.classList.add('player', 'head')
+    getCell(newHead)!.innerHTML = `<span>${SNAKE.length}<span>`
   }
 
   const feed = () => {
@@ -167,7 +170,7 @@ const Snake = (() => {
   }
 
   const init = () => {
-    window.addEventListener('resize', handleResize)
+    // window.addEventListener('resize', handleResize)
 
     window.addEventListener('keydown', handleKeydown)
 
@@ -177,7 +180,7 @@ const Snake = (() => {
     const foodInterval = setInterval(feed, SPEED * 10)
 
     return () => {
-      window.removeEventListener('resize', handleResize)
+      // window.removeEventListener('resize', handleResize)
 
       window.removeEventListener('keydown', handleKeydown)
 
